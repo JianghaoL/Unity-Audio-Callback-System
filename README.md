@@ -38,8 +38,8 @@ Each `AudioEventAsset` contains the following fields:
 <br>
 
 - ***Events***
-- `Retrigger`: A boolean that determines whether the events can be retriggered while it is looping. `Default to false (no retriggering)`.
-- `Markers`: A list of callback events that will be invoked at specific times during the playback of the audio clip.
+  - `Retrigger`: A boolean that determines whether the events can be retriggered while it is looping. `Default to false (no retriggering)`.
+  - `Markers`: A list of callback events that will be invoked at specific times during the playback of the audio clip.
 
 > Details of the `Marker` will be explained in the next section.
 
