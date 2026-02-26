@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -19,7 +20,7 @@ public class AudioEventPlayer : MonoBehaviour
     private double _loopTimer;
     
     private Dictionary<string, UnityEvent> _events;
-    private Queue<EventMarker> _pendingMarkers;
+    private ConcurrentQueue<EventMarker> _pendingMarkers;
     
     /// <summary>
     /// Initializes the audio source with the parameters from the asset and sets up the event dictionary and pending marker queue. 
@@ -41,7 +42,7 @@ public class AudioEventPlayer : MonoBehaviour
             _loopTimer = 0;
             
             InitializeDictionary();
-            _pendingMarkers = new Queue<EventMarker>();
+            _pendingMarkers = new ConcurrentQueue<EventMarker>();
         }
         catch (Exception e)
         {
@@ -55,9 +56,8 @@ public class AudioEventPlayer : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        while (_pendingMarkers.Count > 0)
+        while (_pendingMarkers.TryDequeue(out var toInvoke))
         {
-            EventMarker toInvoke = _pendingMarkers.Dequeue();
             toInvoke.onEvent.Invoke();
         }
         
